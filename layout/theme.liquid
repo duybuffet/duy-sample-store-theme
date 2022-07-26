@@ -10,6 +10,57 @@
   {{ content_for_header }} <!-- Header hook for plugins -->
   {{ 'application.css' | asset_url | stylesheet_tag }}
   {{ 'application.js' | asset_url | script_tag }}
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js' | script_tag }}
+  <script>
+    var cartCount = {{ cart.item_count }};
+
+    function updateCart() {
+      $('#cartNumber').replaceWith(`<a href="/cart" id="cartNumber">cart (${cartCount})</a>`);
+    }
+
+    $(() => {
+      $('#addToCartBtn').on('click', (e) => {
+        e.preventDefault();
+
+        $.ajax({
+          type: 'POST', 
+          url: '/cart/add.js',
+          dataType: 'json', 
+          data: $('#addToCartForm').serialize(),
+          success: function() {
+            alert('added to cart');
+            cartCount++;
+            updateCart();
+          },
+          error: function() {
+            alert('error');
+          }
+        });
+      });
+
+      $('#addInstructionChkbox').on('change', () => {
+        if ($('#addInstructionChkbox').is(':checked')) {
+          $('#cartNote').show();
+          $('#cartNote').removeAttr('disabled'); 
+        } else {
+          $('#cartNote').hide();
+          $('#cartNote').attr('disabled', 'disabled'); 
+        }
+      });
+
+      updateCart();
+    })
+  </script>
+  <style>
+    button#addToCartBtn {
+      background: #71d264;
+      color: #fff;
+      cursor: pointer;
+    }
+    button#addToCartBtn:hover {
+      background: #64a3d2;
+    }
+  </style>
 </head>
 <body>
 
@@ -25,7 +76,7 @@
     {% endif %}
   {% endfor %}
 
-  <a href="/cart">cart</a>
+  <a href="/cart" id="cartNumber">cart</a>
 
   {% if shop.customer_accounts_enabled %}
     {% if customer %}
