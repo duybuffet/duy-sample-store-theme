@@ -1,0 +1,93 @@
+{% schema %}
+{
+  "name": "News Carousel",
+  "tag": "section",
+  "class": "news",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "News Carousel"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Campaign",
+      "type": "richtext",
+      "settings": [
+        {
+           "type": "text",
+           "id": "title",
+           "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured"
+        }
+      ]
+    },
+    {
+      "name": "New Product",
+      "type": "product",
+      "settings": [
+        {
+           "type": "text",
+           "id": "title",
+           "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured"
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "type": "text",
+      "settings": [
+        {
+           "type": "text",
+           "id": "title",
+           "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% assign filtered_blocks = section.blocks | map: 'settings' | sort_natural: 'Featured' %}
+{% for block in filtered_blocks  %}
+  <div class="border" {{ block.shopify_attributes }}>
+    {% case section.blocks[forloop.index].type %}
+      {% when 'product' %%}
+        <p class="blue">{{ block.title }}</p>
+      {% when 'text' %%}
+        <p class="green">{{ block.title }}</p>
+      {% else %}
+        <p class="red">{{ block.title }}</p>
+      {% endcase %}
+    <p>{{ block.description }}</p>
+  </div>
+{% endfor %}
