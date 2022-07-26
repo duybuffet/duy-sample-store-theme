@@ -7,7 +7,7 @@
   </a>
 {% endfor %}
 <h1>{{ product.title }}</h1>
-<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+<form action="/cart/add" method="post" enctype="multipart/form-data" id="addToCartForm">
   <select name="id" id="productSelect">
     {% for variant in product.variants %}
       {% if variant.available %}
@@ -22,8 +22,14 @@
     {% endfor %}
   </select>
   {{ current_variant.price | money }}
-  <label for="Quantity">quantity</label>
-  <input type="number" id="Quantity" name="quantity" value="1" min="1">
-  <button type="submit" name="add" id="AddToCart">Add to cart</button>
+  <input type="hidden" id="Quantity" name="quantity" value="1" min="1">
+  <br><br>
+  <div>
+    {% if product.variants.first.available %}
+      <button type="submit" name="add" id="addToCartBtn">Add to cart</button>  
+    {% else %}
+    <button type="button" name="add" disabled>Add to cart</button>  
+    {% endif %}
+  </div>
 </form>
 <div>{{ product.description }}</div>

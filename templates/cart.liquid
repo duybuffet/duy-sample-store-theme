@@ -35,6 +35,13 @@
       </tbody>
     </table>
     <div>
+      <label>
+        <input type="checkbox" value="1" id="addInstructionChkbox" /> Add Instruction
+      </label>
+      <br/>
+      <textarea name="note" style="display: none" id="cartNote">{{ cart.note }}</textarea>
+    </div>
+    <div>
       <p>sub total : {{ cart.total_price | money }}</p>
       <button type="submit" name="update">Update</button>
       <button type="submit" name="checkout">Checkout</button>
