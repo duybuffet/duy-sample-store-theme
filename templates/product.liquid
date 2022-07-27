@@ -69,6 +69,11 @@
                   <td>{{ item.product.price | times: item.quantity | money }}</td>
                 </tr>
               {% endfor %}
+              <tr class="text-left">
+                <td colspan="2">Total</td>
+                <td>{{ cart.item_count }}</td>
+                <td>{{ cart.total_price | money }}</td>
+              </tr>
             </tbody>
         {% else %}
           Your cart is empty
