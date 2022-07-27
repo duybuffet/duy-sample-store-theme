@@ -78,6 +78,11 @@
 }
 {% endschema %}
 {% assign filtered_blocks = section.blocks | map: 'settings' | sort_natural: 'Featured' %}
+
+<h3 class="text-center">
+  {{ section.settings.label }}
+</h3>
+
 {% for block in filtered_blocks  %}
   <div class="border" {{ block.shopify_attributes }}>
     {% case section.blocks[forloop.index].type %}
