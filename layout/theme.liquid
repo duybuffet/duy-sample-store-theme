@@ -10,23 +10,35 @@
   {{ content_for_header }} <!-- Header hook for plugins -->
   {{ 'application.css' | asset_url | stylesheet_tag }}
   {{ 'application.js' | asset_url | script_tag }}
-  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js' | script_tag }}
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js' | script_tag }}
+  <!-- CSS only -->
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' | script_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css' | stylesheet_tag }}
   <script>
     var cartCount = {{ cart.item_count }};
 
     function updateCart() {
-      $('#cartNumber').replaceWith(`<a href="/cart" id="cartNumber">cart (${cartCount})</a>`);
+      $('#CartIndex').replaceWith(`<span id="CartIndex">${cartCount}</span>`);
     }
 
     $(() => {
       $('#addToCartBtn').on('click', (e) => {
         e.preventDefault();
 
+        var data = {
+          id: $('#VariantIdSelect').val(),
+          quantity: $('#Quantity').val(),
+          properties: {
+            cart_index: Number($('#CartIndex').text())
+          }
+        }
+        console.log(data);
         $.ajax({
           type: 'POST', 
           url: '/cart/add.js',
           dataType: 'json', 
-          data: $('#addToCartForm').serialize(),
+          data,
           success: function() {
             alert('added to cart');
             cartCount++;
@@ -51,46 +63,30 @@
       updateCart();
     })
   </script>
-  <style>
-    button#addToCartBtn {
-      background: #71d264;
-      color: #fff;
-      cursor: pointer;
-    }
-    button#addToCartBtn:hover {
-      background: #64a3d2;
-    }
-    .red {
-      color: red;
-    }
-    .green {
-      color: green;
-    }
-    .blue {
-      color: blue;
-    }
-    .border {
-      border: 1px solid;
-      margin: 5px;
-      padding: 5px;
-    }
-  </style>
 </head>
 <body>
 
-  {% for link in linklists.main-menu.links %}
-    {% assign child_list_handle = link.title | handleize %}
-    {% if linklists[child_list_handle].links != blank %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-      [{% for childlink in linklists[child_list_handle].links %}
-        <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-      {% endfor %}]
-    {% else %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {% endif %}
-  {% endfor %}
-
-  <a href="/cart" id="cartNumber">cart</a>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">DuyTheme</a>
+      </div>
+      <ul class="nav navbar-nav">
+        {% for link in linklists.main-menu.links %}
+          {% assign child_list_handle = link.title | handleize %}
+          {% if linklists[child_list_handle].links != blank %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            [{% for childlink in linklists[child_list_handle].links %}
+              <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+            {% endfor %}]
+          {% else %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+        <li><a href="/cart" id="CartNumber">Cart (<span id="CartIndex"></span>)</a></li>
+      </ul>
+    </div>
+  </nav>
 
   {% if shop.customer_accounts_enabled %}
     {% if customer %}
@@ -103,7 +99,9 @@
   {% endif %}
 
   <main role="main">
-    {{ content_for_layout }}
+    <div class="container mt-100">
+      {{ content_for_layout }}
+    </div>
   </main>
 </body>
 </html>

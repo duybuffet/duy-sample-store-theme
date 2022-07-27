@@ -1,5 +1,6 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+
 <img src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
 {% for image in product.images %}
   <a href="{{ image.src | img_url: 'large' }}">
@@ -8,7 +9,7 @@
 {% endfor %}
 <h1>{{ product.title }}</h1>
 <form action="/cart/add" method="post" enctype="multipart/form-data" id="addToCartForm">
-  <select name="id" id="productSelect">
+  <select name="id" id="VariantIdSelect">
     {% for variant in product.variants %}
       {% if variant.available %}
         <option value="{{ variant.id }}">
@@ -26,10 +27,57 @@
   <br><br>
   <div>
     {% if product.variants.first.available %}
-      <button type="submit" name="add" id="addToCartBtn">Add to cart</button>  
+      <button type="submit" name="add" id="addToCartBtn" class="btn btn-success">Add to cart</button>  
     {% else %}
-    <button type="button" name="add" disabled>Add to cart</button>  
+    <button type="button" name="add" disabled class="btn btn-default">Add to cart</button>  
     {% endif %}
   </div>
 </form>
 <div>{{ product.description }}</div>
+
+<!-- Modal -->
+<div class="modal fade" id="CartModal" tabindex="-1" role="dialog" aria-labelledby="CartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          {% if product.variants.first.inventory_quantity > 0 %}
+            We have {{ product.variants.first.inventory_quantity }} item in stock.
+          {% else %}
+            {{ product.title }} is out of stock
+          {% endif %}
+        </div>
+        {% if cart.item_count > 0 %}
+          <table class="table text-center">
+            <thead>
+              <th>Cart Index</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Total Amount</th>
+            </thead>
+            <tbody>
+              {% for item in cart.items %}
+                <tr class="text-left">
+                  <td>{{ item.properties.cart_index }}</td>
+                  <td>{{ item.product.title }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.product.price | times: item.quantity | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        {% else %}
+          Your cart is empty
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#CartModal').modal()
+</script>
