@@ -1,0 +1,17 @@
+{
+  "name": "update-metafields-script",
+  "version": "1.0.0",
+  "description": "Feature D - Update product meta fields script",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Duy Tang",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "dependencies": {
+    "shopify-api-node": "^3.11.0"
+  }
+}
