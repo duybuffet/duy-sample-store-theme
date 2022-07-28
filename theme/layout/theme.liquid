@@ -8,13 +8,13 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
   {{ content_for_header }} <!-- Header hook for plugins -->
-  {{ 'application.css' | asset_url | stylesheet_tag }}
   {{ 'application.js' | asset_url | script_tag }}
   {{ '//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js' | script_tag }}
   <!-- CSS only -->
   {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' | script_tag }}
   {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
   {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css' | stylesheet_tag }}
+  {{ 'application.css' | asset_url | stylesheet_tag }}
   <script>
     var cartCount = {{ cart.item_count }};
 
@@ -69,7 +69,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">DuyTheme</a>
+        <a class="navbar-brand" href="/">DuyTheme</a>
       </div>
       <ul class="nav navbar-nav">
         {% for link in linklists.main-menu.links %}
