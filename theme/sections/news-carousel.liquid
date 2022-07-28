@@ -86,9 +86,9 @@
 {% for block in filtered_blocks  %}
   <div class="border" {{ block.shopify_attributes }}>
     {% case section.blocks[forloop.index].type %}
-      {% when 'product' %%}
-        <p class="blue">{{ block.title }}</p>
       {% when 'text' %%}
+        <p class="blue">{{ block.title }}</p>
+      {% when 'product' %%}
         <p class="green">{{ block.title }}</p>
       {% else %}
         <p class="red">{{ block.title }}</p>
