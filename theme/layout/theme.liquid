@@ -26,6 +26,9 @@
       $('#addToCartBtn').on('click', (e) => {
         e.preventDefault();
 
+        cartCount++;
+        updateCart();
+
         var data = {
           id: $('#VariantIdSelect').val(),
           quantity: $('#Quantity').val(),
@@ -41,8 +44,7 @@
           data,
           success: function() {
             alert('added to cart');
-            cartCount++;
-            updateCart();
+            
           },
           error: function() {
             alert('error');
